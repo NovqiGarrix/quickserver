@@ -1,0 +1,1 @@
+export { default as getUserCache } from './getUser.cache';
