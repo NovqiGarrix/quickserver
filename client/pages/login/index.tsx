@@ -1,19 +1,23 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import axios from 'axios';
 
+import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { CheckIcon, MailIcon, LockClosedIcon } from '@heroicons/react/solid';
 import { Input, Button } from '../../components/childs';
 
-const Login = () => {
+type LoginProps = { authURL: string }
+const Login: NextPage<LoginProps> = ({ authURL }) => {
 
     const [darkMode, _] = useState(false);
     const [form, setForm] = useState({ email: "", password: "" });
     const [agree, setAgree] = useState(true);
 
-    const authURL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email&response_type=code&client_id=350925341758-01aapceb4t5ggediildbvtbduu58obi1.apps.googleusercontent.com&redirect_uri=https%3A%2F%2F3001-coffee-crab-nrvkf74j.ws-us18.gitpod.io%2Fapi%2Fv1%2Fauth%2Foauth-redirect'
+    const router = useRouter();
+
+    // Queries data from backend
+    const googleLoginError = (router.query?.error as string) ?? null
 
     const benefits = [
         "No Server required",
@@ -76,6 +80,7 @@ const Login = () => {
 
                 {/* Form */}
                 <div className="flex items-center justify-center flex-col">
+                    {googleLoginError && <h3 className="text-red-500 text-poppins font-bold mb-3">{googleLoginError}</h3>}
                     <form className="w-4/6">
                         <Input Icon={MailIcon} label="Email address..." name="email" type="email" onChange={setTheForm} value={form.email} />
                         <Input Icon={LockClosedIcon} label="Password..." name="password" type="password" onChange={setTheForm} value={form.password} />
@@ -99,3 +104,13 @@ const Login = () => {
 }
 
 export default Login
+
+export async function getServerSideProps() {
+
+    const authURL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email&response_type=code&client_id=350925341758-01aapceb4t5ggediildbvtbduu58obi1.apps.googleusercontent.com&redirect_uri=https%3A%2F%2F3001-coffee-crab-nrvkf74j.ws-us18.gitpod.io%2Fapi%2Fv1%2Fauth%2Foauth-redirect';
+
+    return {
+        props: { authURL }
+    }
+
+}

@@ -1,7 +1,7 @@
-import { useState, Fragment, FunctionComponent, ChangeEvent, FormEvent } from 'react';
+import { useState, FunctionComponent, ChangeEvent } from 'react';
 
 import { SearchIcon, ViewListIcon, ViewGridIcon } from '@heroicons/react/outline'
-import { Input, Button, GridView, ListView } from './childs';
+import { Input, Button, GridView } from './childs';
 import { ProjectType } from '../interfaces';
 
 type ProjectProps = {
@@ -57,7 +57,7 @@ const Project: FunctionComponent<ProjectProps> = ({ type, toGrid, toList }) => {
 
             </div>
 
-            {type === "grid" ? <GridView datas={projects} /> : <ListView data={projects} />}
+            {type === "grid" && <GridView datas={projects} />}
         </div>
     )
 

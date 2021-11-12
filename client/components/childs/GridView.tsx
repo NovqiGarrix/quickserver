@@ -17,19 +17,7 @@ const GridView: FunctionComponent<GridViewProps> = ({ datas }) => {
                     </div>
 
                     <div className="flex items-center justify-between w-full">
-                        {data.type === "project" ? (
-                            <Image
-                                alt="User's cool profile"
-                                width={35}
-                                height={35}
-                                objectFit="cover"
-                                loading="lazy"
-                                src="/cool-profile.jpg"
-                                className="rounded-full"
-                            />
-                        ) : (
-                            <data.Icon className="w-5 h-5" />
-                        )}
+                        {data.type === "app" && <data.Icon className="w-5 h-5" />}
 
                         {data.type === "project" ? (
                             <ButtonOutline
