@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Head from 'next/head';
 
-import { Header, Project, Notification } from '../components';
-import router from 'next/router';
+import useUser from '../hooks/useUser';
+import { getProjects } from '../store/actions/project.action';
 
-type User = {
-    _id: string;
-    name: string;
-    email: string;
-}
+import { Header, Project, Notification } from '../components';
 
 const Home = () => {
     const [isGridView, setIsGridView] = useState(true);
-    const [user, setUser] = useState<User>()
+
+    const dispatch = useDispatch();
+
+    const userState = useUser();
 
     const toGrid = () => {
         if (!isGridView) return setIsGridView(true);
@@ -25,31 +24,8 @@ const Home = () => {
     }
 
     useEffect(() => {
-
-        if(!user) {
-            const accessToken = window.localStorage.getItem('accessToken')!;
-            const refreshToken = window.localStorage.getItem('refreshToken')!;
-
-            axios.get(`${process.env.SERVER_URL}/api/v1/user`, { headers: {
-                'x-access-token': accessToken,
-                'x-refresh-token': refreshToken
-            } }).then(({ data: { data, error, newAccessToken } }: { data: { data: User, error: string, newAccessToken: string } }) => {
-                console.log({ data, error });
-                if(error === 'Unauthorized!') {
-                    window.localStorage.removeItem('accessToken');
-                    window.localStorage.removeItem('refreshToken');
-                    return router.replace('/login');
-                }
-                if(newAccessToken) window.localStorage.setItem('accessToken', newAccessToken);
-                setUser({ _id: data._id, name: data.name, email: data.email });
-            }).catch((err) => {
-                window.localStorage.removeItem('accessToken');
-                window.localStorage.removeItem('refreshToken');
-                return router.replace('/login');
-            });
-        }
-
-    }, [user]);
+        dispatch(getProjects());
+    }, [dispatch]);
 
     return (
         <div className="bg-white">
@@ -62,9 +38,9 @@ const Home = () => {
             <Header currentItem="projects" />
 
             <section className="w-full px-16 py-10">
-                <h1 className="text-4xl font-bold font-poppins select-none text-red-400">Hy there!</h1>
+                <h1 className="text-4xl font-bold font-poppins select-none text-red-400">Hy {userState.user?.name}</h1>
                 <h2 className="text-md font-poppins font-medium tracking-wide text-gray-700">Ready to start and manage your project?</h2>
-                <p className="text-xs text-red-500 font-poppins tracking-wide font-normal">{user?.name ?? 'Undefined'}</p>
+                {userState.error && <p className="text-xs text-red-500 font-poppins tracking-wide font-normal">{userState.error}</p>}
             </section>
 
             <section className="w-full flex items-start border-t-2 border-gray-100 justify-between">
