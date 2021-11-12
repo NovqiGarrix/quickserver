@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
 
-import { Header, App, Notification } from '../../components';
+import { Header, AppComponent, Notification } from '../../components';
 
 const Apps = () => {
 
@@ -39,7 +39,7 @@ const Apps = () => {
 
             <section className="w-full flex items-start border-t-2 border-gray-100 justify-between">
                 <div className="w-9/12">
-                    <App type={isGridView ? "grid" : "list"} toGrid={toGrid} toList={toList} />
+                    <AppComponent type={isGridView ? "grid" : "list"} toGrid={toGrid} toList={toList} />
                 </div>
                 <div className="w-3/12">
                     <Notification label="This is a new message" type="info" />

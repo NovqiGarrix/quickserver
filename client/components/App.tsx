@@ -1,16 +1,29 @@
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
+import { ChangeEvent, useState, useEffect, Fragment, useRef } from 'react';
+import { useRouter } from 'next/router';
 
-import { SearchIcon, ViewListIcon, ViewGridIcon, CodeIcon } from '@heroicons/react/outline'
-import { Input, Button, GridView, ListView } from './childs';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { RootState } from '../store';
+import { IAppReducer } from '../store/reducers/app.reducer';
+import { getApps } from '../store/actions/app.action';
+
+import { SearchIcon, ViewListIcon, ViewGridIcon } from '@heroicons/react/outline'
+import { Input, Button, GridView } from './childs';
 
 type AppProps = {
     type: string;
     toGrid: () => void
     toList: () => void
 }
-const App = ({ type, toGrid, toList }: AppProps) => {
+const AppComponent = ({ type, toGrid, toList }: AppProps) => {
 
     const [searchQuery, setSearchQuery] = useState("");
+
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const appState: IAppReducer = useSelector((state: RootState) => state.app);
+
+    const projectId = useRef<string>();
 
     const submitSearch = (ev: any) => {
         ev.preventDefault();
@@ -20,13 +33,12 @@ const App = ({ type, toGrid, toList }: AppProps) => {
         setSearchQuery(target.value);
     }
 
-    const apps = [
-        { name: "Hello World", createdAt: "23 minutes ago by Novrii", Icon: CodeIcon, type: "app" },
-        { name: "QuickServer", createdAt: "3 hours ago by Novrii", Icon: CodeIcon, type: "app" },
-        { name: "nv-movie", createdAt: "21 hours ago by Novrii", Icon: CodeIcon, type: "app" },
-        { name: "Scrapper Tool", createdAt: "3 days ago by Novrii", Icon: CodeIcon, type: "app" },
-        { name: "NvClass", createdAt: "1 week ago by Novrii", Icon: CodeIcon, type: "app" }
-    ]
+    useEffect(() => {
+        const projectActiveId = localStorage.getItem('project_active')!
+        projectId.current = projectActiveId
+
+        dispatch(getApps(projectActiveId));
+    }, []);
 
     return (
         <div className="bg-blue-50 p-10 w-full max-h-screen h-screen overflow-y-auto">
@@ -56,10 +68,22 @@ const App = ({ type, toGrid, toList }: AppProps) => {
 
             </div>
 
-            {type === "grid" ? <GridView datas={apps} /> : <ListView data={apps} />}
+            {type === "grid" && (
+                <Fragment>
+                    {!appState.error && appState.app ? (
+                        <GridView type="app" datas={appState.app} />
+                    ) : (
+                        <div>{!projectId.current && (
+                            <div>
+                                Please <p className="underline text-red-500 font-bold text-poppins" onClick={() => router.push('/')}>choose</p> the project first!
+                            </div>
+                        )}</div>
+                    )}
+                </Fragment>
+            )}
         </div>
     )
 
 }
 
-export default App
+export default AppComponent

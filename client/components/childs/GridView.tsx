@@ -4,9 +4,9 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
 import { ButtonOutline } from '.';
-import { AppType } from '../../interfaces';
 
 import { Project } from '../../store/reducers/project.reducer';
+import { App } from '../../store/reducers/app.reducer';
 import { UPDATE_DATA_PROJECT } from '../../store/action.types';
 
 type GridViewProps = { datas: any, type: "project" | "app" }
@@ -45,7 +45,7 @@ const GridView: FunctionComponent<GridViewProps> = ({ datas, type }) => {
 
     return (
         <div className="grid grid-cols-3 gap-6">
-            {datas.map((data: AppType & Project, key: number) => {
+            {datas.map((data: App & Project, key: number) => {
 
                 const isActive = currentActiveId === data._id
 

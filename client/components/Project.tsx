@@ -7,7 +7,6 @@ import type { IProjectReducer } from '../store/reducers/project.reducer';
 
 import { SearchIcon, ViewListIcon, ViewGridIcon } from '@heroicons/react/outline'
 import { Input, Button, GridView } from './childs';
-import { ProjectType } from '../interfaces';
 
 type ProjectProps = {
     type: "grid" | "list";

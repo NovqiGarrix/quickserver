@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback, createRef } from 'react';
+import { useState, useEffect, useCallback, createRef, FunctionComponent } from 'react';
 import { useRouter } from 'next/router'
 
 import Image from 'next/image';
 import { ChatAlt2Icon } from '@heroicons/react/outline';
 
-const Header = ({ currentItem }) => {
+
+type HeaderProps = { currentItem: string }
+const Header: FunctionComponent<HeaderProps> = ({ currentItem }) => {
 
     const [profileOpened, setProfileOpened] = useState(false);
 
@@ -30,7 +32,7 @@ const Header = ({ currentItem }) => {
         { label: "Logout", onClick: () => console.log("Logout clicked") }
     ]
 
-    const profileDropdownRef = createRef();
+    const profileDropdownRef = createRef<HTMLDivElement>();
 
     const closeDropdown = useCallback((e) => {
         if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target)) return setProfileOpened(false);
