@@ -48,7 +48,7 @@ const Header: FunctionComponent<HeaderProps> = ({ currentItem }) => {
 
 
     return (
-        <section className="flex items-center justify-between px-16 py-5 border-b sticky z-20 top-0 bg-white shadow-sm">
+        <section className="flex items-center justify-between px-16 py-5 border-b sticky z-10 top-0 bg-white shadow-sm">
 
             {/* Logo Brand */}
             <h1 className="text-md font-bold select-none font-poppins">quick:<span className="text-red-400">Server</span></h1>

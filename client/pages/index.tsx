@@ -1,19 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Head from 'next/head';
 
 import useUser from '../hooks/useUser';
 import { getProjects } from '../store/actions/project.action';
 
-import { Header, Project, Notification } from '../components';
+import { Header, Project, Notification, Modal } from '../components';
+import { CreateProject } from '../components/childs';
 
 const Home = () => {
     const [isGridView, setIsGridView] = useState(true);
+    const [openModal, setOpenModal] = useState(true)
 
     const dispatch = useDispatch();
 
     const userState = useUser();
+
+    const cancelButtonModalRef = useRef(null)
 
     const toGrid = () => {
         if (!isGridView) return setIsGridView(true);
@@ -35,6 +39,9 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
+            <Modal onOk={() => console.log()} open={openModal} setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef}>
+                <CreateProject onOk={() => console.log()} setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef} />
+            </Modal>
             <Header currentItem="projects" />
 
             <section className="w-full px-16 py-10">

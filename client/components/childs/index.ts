@@ -4,3 +4,4 @@ export { default as ButtonOutline } from './ButtonOutline';
 
 // View
 export { default as GridView } from './GridView';
+export { default as CreateProject } from './CreateProject';
