@@ -3,7 +3,6 @@ import { FunctionComponent, useRef, Fragment, Dispatch, SetStateAction, MutableR
 import { Dialog, Transition } from '@headlessui/react'
 
 type ModalProps = {
-    onOk: () => void;
     cancelButtonRef: MutableRefObject<null>;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>

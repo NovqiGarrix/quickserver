@@ -18,7 +18,7 @@ const validateCreateProject = (req: Request, res: Response, next: NextFunction):
 
     const validate = requestBody.safeParse(req.body)
 
-    if(!validate.success) {
+    if (!validate.success) {
         const error = zodError(validate.error.issues);
         return sendHTTPError(res, error, 406);
     }
@@ -35,9 +35,10 @@ export const validateUpdateBody = async (req: Request<UpdateProjectParams>, res:
         const { _id: userId, apiKey } = res.locals.user
 
         const isEmptyBody = Object.keys(req.body).length < 1
+
         if (isEmptyBody) return sendHTTPError(res, 'Please provide at least one field to update!', 406);
 
-        const existProject = await projectService.getProject(projectId, userId, apiKey, { name: 1 })
+        const existProject = await projectService.getProject({ _id: projectId, userId, apiKey }, { name: 1 })
         if (!existProject) return sendHTTPError(res, 'Invalid request!', 406)
 
         return next();
@@ -55,7 +56,7 @@ export const validateDeleteProject = async (req: Request, res: Response, next: N
 
     try {
 
-        const project = await projectService.getProject(projectId, userId, apiKey, { name: 1 });
+        const project = await projectService.getProject({ _id: projectId, userId, apiKey }, { name: 1 });
         if (!project) return sendHTTPError(res, 'Invalid request!', 406);
 
         return next();

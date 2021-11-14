@@ -8,20 +8,21 @@ const GoogleLogin: FunctionComponent = () => {
 
     const router = useRouter();
 
-    let payload = router.query?.payload as string
-
-    payload = payload ? decodeBase64(payload) : ''
-
     useEffect(() => {
 
-        if(payload) {
-            
+        let payload = router.query?.payload as string
+        payload = payload ? decodeBase64(payload) : ''
+
+        if (payload) {
+
             const { accessToken, refreshToken }: { accessToken: string; refreshToken: string } = JSON.parse(payload);
             window.localStorage.setItem('accessToken', accessToken as string);
             window.localStorage.setItem('refreshToken', refreshToken as string);
-    
+
             document.location.href = `${process.env.BASE_URL}`
         }
+
+        router.replace('/login');
 
     }, [router]);
 

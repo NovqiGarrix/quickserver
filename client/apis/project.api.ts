@@ -20,7 +20,7 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use((result) => {
 
     const { data: { newAccessToken } } = result
-    if(newAccessToken) localStorage.setItem('accessToken', newAccessToken);
+    if (newAccessToken) localStorage.setItem('accessToken', newAccessToken);
 
     return result
 }, (onRejected) => Promise.reject(onRejected));
@@ -33,4 +33,21 @@ export async function getProjectsAPI() {
 export async function getProjectAPI(projectId: string) {
     const { data } = await API.get(`/${projectId}/one`);
     return data
+}
+
+export type CreateProjectType = Record<string, string> & { name: string }
+export async function createProjectAPI(data: CreateProjectType) {
+    const { data: result } = await API.post('/', data);
+    return result
+}
+
+export async function deleteProjectAPI(projectId: string) {
+    const { data } = await API.delete(`/${projectId}/one`);
+    return data
+}
+
+export type UpdateProjectType = Record<string, string>
+export async function updateProjectAPI(projectId: string, data: UpdateProjectType) {
+    const { data: result } = await API.put(`/${projectId}/one`, data);
+    return result
 }

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import Head from 'next/head';
 
-import useUser from '../hooks/useUser';
+import { useUser, useCheckToken } from '../hooks';
 import { getProjects } from '../store/actions/project.action';
 
 import { Header, Project, Notification, Modal } from '../components';
@@ -11,10 +11,11 @@ import { CreateProject } from '../components/childs';
 
 const Home = () => {
     const [isGridView, setIsGridView] = useState(true);
-    const [openModal, setOpenModal] = useState(true)
+    const [openModal, setOpenModal] = useState(false);
 
     const dispatch = useDispatch();
 
+    useCheckToken();
     const userState = useUser();
 
     const cancelButtonModalRef = useRef(null)
@@ -39,8 +40,8 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <Modal onOk={() => console.log()} open={openModal} setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef}>
-                <CreateProject onOk={() => console.log()} setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef} />
+            <Modal open={openModal} setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef}>
+                <CreateProject setOpen={setOpenModal} cancelButtonRef={cancelButtonModalRef} />
             </Modal>
             <Header currentItem="projects" />
 
@@ -52,7 +53,7 @@ const Home = () => {
 
             <section className="w-full flex items-start border-t-2 border-gray-100 justify-between">
                 <div className="w-9/12">
-                    <Project type={isGridView ? "grid" : "list"} toGrid={toGrid} toList={toList} />
+                    <Project setOpenModal={setOpenModal} type={isGridView ? "grid" : "list"} toGrid={toGrid} toList={toList} />
                 </div>
                 <div className="w-3/12">
                     <Notification label="This is a new message" type="info" />

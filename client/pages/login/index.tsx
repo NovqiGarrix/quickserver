@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useRef, useEffect } from 'react';
 
 import { NextPage } from 'next';
 import Head from 'next/head';
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import { CheckIcon, MailIcon, LockClosedIcon } from '@heroicons/react/solid';
 import { Input, Button } from '../../components/childs';
+import { useCheckIsLogin } from '../../hooks';
 
 type LoginProps = { authURL: string }
 const Login: NextPage<LoginProps> = ({ authURL }) => {
@@ -14,10 +15,11 @@ const Login: NextPage<LoginProps> = ({ authURL }) => {
     const [form, setForm] = useState({ email: "", password: "" });
     const [agree, setAgree] = useState(true);
 
+    useCheckIsLogin();
     const router = useRouter();
 
     // Queries data from backend
-    const googleLoginError = (router.query?.error as string) ?? null
+    const googleLoginError = useRef<string | null>();
 
     const benefits = [
         "No Server required",
@@ -38,6 +40,10 @@ const Login: NextPage<LoginProps> = ({ authURL }) => {
             <p className="text-white text-bold tracking-wide font-poppins text-sm ">Sign In with Google</p>
         </a>
     )
+
+    useEffect(() => {
+        googleLoginError.current = (router.query?.error as string) ?? null
+    }, [router]);
 
     return (
         <div className={`${darkMode ? 'dark' : ''} `}>
@@ -80,7 +86,7 @@ const Login: NextPage<LoginProps> = ({ authURL }) => {
 
                 {/* Form */}
                 <div className="flex items-center justify-center flex-col">
-                    {googleLoginError && <h3 className="text-red-500 text-poppins font-bold mb-3">{googleLoginError}</h3>}
+                    {googleLoginError && <h3 className="text-red-500 text-poppins font-bold mb-3">{googleLoginError.current}</h3>}
                     <form className="w-4/6">
                         <Input Icon={MailIcon} label="Email address..." name="email" type="email" onChange={setTheForm} value={form.email} />
                         <Input Icon={LockClosedIcon} label="Password..." name="password" type="password" onChange={setTheForm} value={form.password} />
@@ -107,7 +113,7 @@ export default Login
 
 export async function getServerSideProps() {
 
-    const authURL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email&response_type=code&client_id=350925341758-01aapceb4t5ggediildbvtbduu58obi1.apps.googleusercontent.com&redirect_uri=https%3A%2F%2F3001-coffee-crab-nrvkf74j.ws-us18.gitpod.io%2Fapi%2Fv1%2Fauth%2Foauth-redirect';
+    const authURL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email&response_type=code&client_id=350925341758-01aapceb4t5ggediildbvtbduu58obi1.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fapi%2Fv1%2Fauth%2Foauth-redirect';
 
     return {
         props: { authURL }

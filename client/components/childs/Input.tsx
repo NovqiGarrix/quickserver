@@ -9,8 +9,11 @@ type InputProps = {
     name: string;
     value: string;
     onSubmit?: (ev: FormEvent<HTMLInputElement>) => void
+    autoComplete?: boolean;
 }
-const Input: FunctionComponent<InputProps> = ({ Icon, type, onChange, label, name, value, onSubmit }) => {
+const Input: FunctionComponent<InputProps> = (props) => {
+
+    const { Icon, type, onChange, label, name, value, onSubmit, autoComplete = false } = props
 
     return (
         <Fragment>
@@ -23,7 +26,8 @@ const Input: FunctionComponent<InputProps> = ({ Icon, type, onChange, label, nam
                     name={name}
                     value={value}
                     onSubmit={onSubmit}
-                    className="flex-grow text-sm text-gray-500 outline-none focus:border-0 py-3 pl-2 rounded-r-lg"
+                    autoComplete={`${autoComplete}`}
+                    className="flex-grow text-sm text-gray-500 outline-none focus:border-0 py-3 pl-2 rounded-r-lg font-poppins"
                 />
             </div>
         </Fragment>

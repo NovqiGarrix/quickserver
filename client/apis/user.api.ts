@@ -20,8 +20,8 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use((result) => {
 
     const { data: { newAccessToken } } = result
+    
     if(newAccessToken) localStorage.setItem('accessToken', newAccessToken);
-
     return result
 }, (onRejected) => Promise.reject(onRejected));
 

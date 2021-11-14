@@ -1,5 +1,6 @@
 import { ChangeEvent, useState, useEffect, Fragment, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -38,7 +39,7 @@ const AppComponent = ({ type, toGrid, toList }: AppProps) => {
         projectId.current = projectActiveId
 
         dispatch(getApps(projectActiveId));
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="bg-blue-50 p-10 w-full max-h-screen h-screen overflow-y-auto">
@@ -73,11 +74,22 @@ const AppComponent = ({ type, toGrid, toList }: AppProps) => {
                     {!appState.error && appState.app ? (
                         <GridView type="app" datas={appState.app} />
                     ) : (
-                        <div>{!projectId.current && (
-                            <div>
-                                Please <p className="underline text-red-500 font-bold text-poppins" onClick={() => router.push('/')}>choose</p> the project first!
+                        !projectId.current && (
+                            <div className="flex items-center justify-center flex-col">
+                                <div className="w-8/12 flex items-center justify-center">
+                                    <Image
+                                        loading="lazy"
+                                        width={600}
+                                        height={510}
+                                        alt="No app ilustration"
+                                        src="/assets/empty-app.png"
+                                        objectFit="cover"
+                                        className="mb-3"
+                                    />
+                                </div>
+                                <p className="font-poppins mt-5">Please <span className="text-red-500 cursor-pointer hover:underline" onClick={() => router.push('/')}>choose</span> the project first!</p>
                             </div>
-                        )}</div>
+                        )
                     )}
                 </Fragment>
             )}

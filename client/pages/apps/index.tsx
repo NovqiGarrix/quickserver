@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 
 import Head from 'next/head';
-import Router from 'next/router';
 
 import { Header, AppComponent, Notification } from '../../components';
+import { useCheckToken } from '../../hooks';
 
 const Apps = () => {
 
     const [user, _] = useState(true);
     const [isGridView, setIsGridView] = useState(true);
+
+    useCheckToken();
 
     const toGrid = () => {
         if (!isGridView) return setIsGridView(true);
@@ -17,10 +19,6 @@ const Apps = () => {
     const toList = () => {
         if (isGridView) return setIsGridView(false);
     }
-
-    useEffect(() => {
-        if (!user) Router.push('/', '/auth/');
-    }, [user]);
 
     return (
         <div className="bg-white">
