@@ -15,7 +15,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction): 
     const refreshToken = req.headers['x-refresh-token']! as string
 
     const clientScriptAccessToken = req.headers['x-client-token'] as string | undefined
-    if(clientScriptAccessToken) return await clientScriptAuth(clientScriptAccessToken, res, next).catch((err) => {
+    if (clientScriptAccessToken) return await clientScriptAuth(clientScriptAccessToken, res, next).catch((err) => {
         logger.error('ClientScriptError', err.message);
         return sendHTTPError(res, err.message);
     });
@@ -48,10 +48,10 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction): 
             return next();
         }
 
-        const { sessionId } = verifiedToken.data as { sessionId: string }
+        const { email } = verifiedToken.data as { email: string }
         const ioRedis = new IoRedis();
 
-        const user = JSON.parse(await ioRedis.get(sessionId));
+        const user = JSON.parse(await ioRedis.get(email));
         if (!user) return sendHTTPError(res, 'Unauthorized!', 401);
 
         res.locals.user = user;

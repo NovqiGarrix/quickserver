@@ -40,7 +40,10 @@ const app = () => {
 
     redis.getConnection();
     logger.info('IoRedis', 'Redis Connected!');
-    mongoose.connect(MONGODB_URL).then(() => logger.info(NAMESPACE, `Mongodb Connected!`)).catch((err) => logger.error(NAMESPACE, err.message));
+    mongoose.connect(MONGODB_URL).then(() => logger.info(NAMESPACE, `Mongodb Connected!`)).catch((err) => {
+        logger.error(NAMESPACE, err.message)
+        process.exit();
+    });
 
     return app
 }
