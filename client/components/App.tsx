@@ -9,7 +9,8 @@ import { IAppReducer } from '../store/reducers/app.reducer';
 import { getApps } from '../store/actions/app.action';
 
 import { SearchIcon, ViewListIcon, ViewGridIcon } from '@heroicons/react/outline'
-import { Input, Button, GridView } from './childs';
+import { Input, Button } from './childs';
+import AppGridView from './childs/AppGridView';
 
 type AppProps = {
     type: string;
@@ -72,7 +73,7 @@ const AppComponent = ({ type, toGrid, toList }: AppProps) => {
             {type === "grid" && (
                 <Fragment>
                     {!appState.error && appState.app ? (
-                        <GridView type="app" datas={appState.app} />
+                        <AppGridView datas={appState.app} />
                     ) : (
                         !projectId.current && (
                             <div className="flex items-center justify-center flex-col">

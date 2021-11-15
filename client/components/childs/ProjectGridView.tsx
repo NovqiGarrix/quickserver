@@ -9,19 +9,16 @@ import { ButtonOutline, InfoIcon, Realtime } from '.';
 import { RootState } from '../../store';
 
 type GridViewProps = {
-    datas: any,
-    type: "project" | "app",
-    onProjectClick?: (projectId: string) => void;
-    onProjectDelete?: (projectId: string) => void;
-
-    onProjectRename?: (projectId: string, newName: string) => void;
+    datas: Array<Project>,
+    onProjectClick: (projectId: string) => void;
+    onProjectDelete: (projectId: string) => void;
+    onProjectRename: (projectId: string, newName: string) => void;
 }
 
-const GridView: FunctionComponent<GridViewProps> = (props) => {
+const ProjectGridView: FunctionComponent<GridViewProps> = (props) => {
 
     const {
         datas,
-        type,
         onProjectClick,
         onProjectDelete,
         onProjectRename
@@ -55,7 +52,7 @@ const GridView: FunctionComponent<GridViewProps> = (props) => {
 
     return (
         <div className="grid grid-cols-3 gap-6">
-            {datas.map((data: App & Project, key: number) => {
+            {datas.map((data, key: number) => {
 
                 const isActive = currentActiveId === data._id
 
@@ -100,34 +97,26 @@ const GridView: FunctionComponent<GridViewProps> = (props) => {
                         </div>
 
                         <div className="flex items-center justify-between w-full">
-                            {type === "app" && <data.Icon className="w-5 h-5" />}
+                            <ButtonOutline
+                                onClick={() => onProjectClick && onProjectClick(data._id)}
+                                type="button"
+                                color={{ normal: "green-400", hover: "green-400" }}
+                                active={isActive}
+                            >
+                                {isActive ? 'Selected' : 'Select Project'}
+                            </ButtonOutline>
 
-                            {type === "project" ? (
-                                <Fragment>
-                                    <ButtonOutline
-                                        onClick={() => onProjectClick && onProjectClick(data._id)}
-                                        type="button"
-                                        color={{ normal: "green-400", hover: "green-400" }}
-                                        active={isActive}
-                                    >
-                                        {isActive ? 'Selected' : 'Select Project'}
-                                    </ButtonOutline>
-
-                                    {projectState.isActionLoading.status && projectState.isActionLoading.projectId === data._id ? (
-                                        <RefreshIcon className="animate-spin text-gray-500 w-6 h-6" />
-                                    ) : (
-                                        <InfoIcon
-                                            label="Delete"
-                                            onClick={() => onProjectDelete && onProjectDelete(data._id)}
-                                        >
-                                            <TrashIcon
-                                                className="w-6 h-6 text-gray-500 hover:text-red-500 cursor-pointer transition-all duration-150"
-                                            />
-                                        </InfoIcon>
-                                    )}
-                                </Fragment>
+                            {projectState.isActionLoading.status && projectState.isActionLoading.projectId === data._id ? (
+                                <RefreshIcon className="animate-spin text-gray-500 w-6 h-6" />
                             ) : (
-                                <small>Apps</small>
+                                <InfoIcon
+                                    label="Delete"
+                                    onClick={() => onProjectDelete && onProjectDelete(data._id)}
+                                >
+                                    <TrashIcon
+                                        className="w-6 h-6 text-gray-500 hover:text-red-500 cursor-pointer transition-all duration-150"
+                                    />
+                                </InfoIcon>
                             )}
                         </div>
                     </div>
@@ -138,4 +127,4 @@ const GridView: FunctionComponent<GridViewProps> = (props) => {
 
 }
 
-export default GridView
+export default ProjectGridView

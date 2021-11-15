@@ -5,5 +5,5 @@ export { default as Realtime } from './Realtime';
 export { default as InfoIcon } from './InfoIcon';
 
 // View
-export { default as GridView } from './GridView';
+export { default as ProjectGridView } from './ProjectGridView';
 export { default as CreateProject } from './CreateProject';

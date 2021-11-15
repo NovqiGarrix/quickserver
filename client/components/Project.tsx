@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, ChangeEvent, Dispatch, SetStateAction, useRef } from 'react';
+import { useState, FunctionComponent, ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -6,7 +6,7 @@ import { RootState } from '../store';
 import type { IProjectReducer } from '../store/reducers/project.reducer';
 
 import { SearchIcon, ViewListIcon, ViewGridIcon } from '@heroicons/react/outline'
-import { Input, Button, GridView } from './childs';
+import { Input, Button, ProjectGridView } from './childs';
 import { UPDATE_DATA_PROJECT } from '../store/action.types';
 import { deleteProject, updateProject } from '../store/actions/project.action';
 
@@ -77,17 +77,21 @@ const Project: FunctionComponent<ProjectProps> = ({ type, toGrid, toList, setOpe
         <div className="bg-blue-50 p-10 w-full max-h-screen h-screen overflow-y-auto">
 
             <div className="flex items-center justify-between mb-8">
-                <form className="w-3/5" onSubmit={submitSearch}>
-                    <Input
-                        onChange={onSearchChange}
-                        value={searchQuery}
-                        Icon={SearchIcon}
-                        label="Search projects..."
-                        name="searchQuery"
-                        type="text"
-                        onSubmit={(ev) => ev.preventDefault()}
-                    />
-                </form>
+                <div className="inline-block w-full">
+                    <form className="w-3/5" onSubmit={submitSearch}>
+                        <Input
+                            onChange={onSearchChange}
+                            value={searchQuery}
+                            Icon={SearchIcon}
+                            label="Search projects..."
+                            name="searchQuery"
+                            type="text"
+                            onSubmit={(ev) => ev.preventDefault()}
+                        />
+                    </form>
+
+                    {/* TOTO: Create filter query */}
+                </div>
 
 
                 <div className="flex items-center mb-3">
@@ -103,10 +107,9 @@ const Project: FunctionComponent<ProjectProps> = ({ type, toGrid, toList, setOpe
 
             {type === "grid" && (
                 !projectState.error && projectState.project ? (
-                    <GridView
+                    <ProjectGridView
                         onProjectDelete={onProjectDelete}
                         onProjectClick={onProjectClick}
-                        type="project"
                         datas={searchQuery ? projectState.project.filter((project) => project.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1) : projectState.project}
                         onProjectRename={onProjectRename}
                     />
