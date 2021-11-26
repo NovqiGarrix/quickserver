@@ -7,7 +7,7 @@ const sendHTTPError = (res: Response, message: string | Object, code: number = 5
         error: message
     }
 
-    return res.status(code).json(response)
+    return res.send(response);
 
 }
 

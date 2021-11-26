@@ -7,5 +7,5 @@ import userReducer from './user.reducer';
 export default combineReducers({
     user: userReducer,
     project: projectReducer,
-    app: appReducer
+    app: appReducer,
 })

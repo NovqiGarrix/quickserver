@@ -49,12 +49,11 @@ async function loginWithGoogle(code: string): Promise<{ ok: boolean; message: st
     await ioRedis.set(newUser.email, 960, JSON.stringify(newUser)); // 1 minutes longer in redis
 
     const accessToken = jwt.signToken({ email: newUser.email }, { expiresIn: '15m' });
-    const refreshToken = jwt.signToken({ email: newUser.email }, { expiresIn: '1y' });
 
     return {
         ok: true,
         message: 'OK!',
-        data: { accessToken, refreshToken }
+        data: { accessToken }
     }
 }
 

@@ -1,12 +1,12 @@
-import { FunctionComponent, Fragment, useState, Dispatch, SetStateAction, MutableRefObject } from 'react';
+import { FunctionComponent, Fragment, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { IProjectReducer, Project } from '../../store/reducers/project.reducer';
-import { App } from '../../store/reducers/app.reducer';
 
 import { TrashIcon, RefreshIcon, PencilAltIcon, XIcon, CheckIcon } from '@heroicons/react/outline';
 import { ButtonOutline, InfoIcon, Realtime } from '.';
 import { RootState } from '../../store';
+import { IUserReducer } from '../../store/reducers/user.reducer';
 
 type GridViewProps = {
     datas: Array<Project>,
@@ -17,12 +17,9 @@ type GridViewProps = {
 
 const ProjectGridView: FunctionComponent<GridViewProps> = (props) => {
 
-    const {
-        datas,
-        onProjectClick,
-        onProjectDelete,
-        onProjectRename
-    } = props
+    const { datas, onProjectClick, onProjectDelete, onProjectRename } = props
+
+    const userState: IUserReducer = useSelector((state: RootState) => state.user);
     const projectState: IProjectReducer = useSelector((state: RootState) => state.project);
 
     const [isEditingProjectName, setIsEditingProjectName] = useState({ status: false, projectId: "" });
@@ -89,11 +86,9 @@ const ProjectGridView: FunctionComponent<GridViewProps> = (props) => {
                                     </Fragment>
                                 )}
                             </div>
-                            <Realtime
-                                Component="p"
-                                time={data.createdAt}
-                                className="text-gray-600 text-sm font-poppins"
-                            />
+                            <p className="text-gray-500 font-poppins tracking-wide flex text-sm">
+                                <Realtime time={data.createdAt} className="mr-1" /> by {userState.user?.name}
+                            </p>
                         </div>
 
                         <div className="flex items-center justify-between w-full">

@@ -16,20 +16,21 @@ export default async (bearerToken: string, res: Response, next: NextFunction) =>
     try {
 
         const aValidBearer = await bcrypt.compare('novqigarrix210300', bearer);
-        if(!aValidBearer) return sendHTTPError(res, 'Invalid request!', 406);
+        if (!aValidBearer) return sendHTTPError(res, 'Invalid request!', 406);
 
-        const ioRedis = new IoRedis();
+        // const ioRedis = new IoRedis();
 
-        const redisData = JSON.parse(await ioRedis.get(userId));
-        if(redisData) {
-            res.locals.user = redisData
-            return next();
-        }
+        // const redisData = JSON.parse(await ioRedis.get(userId));
+        // if (redisData) {
+        //     res.locals.user = redisData
+        //     return next();
+        // }
 
         const user = await userService.findOne({ _id: userId, apiKey });
-        if(!user) return sendHTTPError(res, 'User not found!', 404);
+        if (!user) return sendHTTPError(res, 'User not found!', 404);
 
-        await ioRedis.set(user._id, 900, JSON.stringify(user));
+
+        // await ioRedis.set(user.email, 900, JSON.stringify(user));
         res.locals.user = user
 
         return next();

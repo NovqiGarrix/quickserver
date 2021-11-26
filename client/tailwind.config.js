@@ -7,6 +7,7 @@ module.exports = {
       roboto: ['"Roboto"'],
       poppins: ['"Poppins"'],
       title: ['"Fredoka One"'],
+      code: ['"ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace"']
     },
   },
   variants: {

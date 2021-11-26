@@ -11,8 +11,10 @@ const useUser = () => {
     const userState: IUserReducer = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
-        dispatch(getUser());
-    }, [dispatch]);
+        if (!userState.user) {
+            dispatch(getUser());
+        }
+    }, [dispatch, userState.user]);
 
     return userState
 }

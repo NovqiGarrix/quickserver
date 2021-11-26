@@ -77,21 +77,19 @@ const Project: FunctionComponent<ProjectProps> = ({ type, toGrid, toList, setOpe
         <div className="bg-blue-50 p-10 w-full max-h-screen h-screen overflow-y-auto">
 
             <div className="flex items-center justify-between mb-8">
-                <div className="inline-block w-full">
-                    <form className="w-3/5" onSubmit={submitSearch}>
-                        <Input
-                            onChange={onSearchChange}
-                            value={searchQuery}
-                            Icon={SearchIcon}
-                            label="Search projects..."
-                            name="searchQuery"
-                            type="text"
-                            onSubmit={(ev) => ev.preventDefault()}
-                        />
-                    </form>
+                <form className="w-3/5" onSubmit={submitSearch}>
+                    <Input
+                        onChange={onSearchChange}
+                        value={searchQuery}
+                        Icon={SearchIcon}
+                        label="Search projects..."
+                        name="searchQuery"
+                        type="text"
+                        onSubmit={(ev) => ev.preventDefault()}
+                    />
 
                     {/* TOTO: Create filter query */}
-                </div>
+                </form>
 
 
                 <div className="flex items-center mb-3">

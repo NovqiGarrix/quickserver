@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Head from 'next/head';
 
 import { Header, AppComponent, Notification } from '../../components';
-import { useCheckToken } from '../../hooks';
+import { useCheckToken, useUser } from '../../hooks';
 
 const Apps = () => {
 
-    const [user, _] = useState(true);
+    useUser();
+
     const [isGridView, setIsGridView] = useState(true);
 
     useCheckToken();
@@ -21,7 +22,7 @@ const Apps = () => {
     }
 
     return (
-        <div className="bg-white">
+        <div className="bg-white w-full">
             <Head>
                 <title>Apps - QuickServer</title>
                 <meta name="description" content="QuickServer dashboard page" />
